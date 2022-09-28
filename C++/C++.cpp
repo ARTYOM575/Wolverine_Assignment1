@@ -17,7 +17,7 @@ void memset(void* src, char val, size_t count) {
 	*((char*)src + i) = '\0';
 }
 
-void memcpy(void* src, void* dest) { 
+void memcpy(void* src, void* dest) {
 	int i;
 	for (i = 0; *((char*)src + i) != '\0'; ++i)
 	{
@@ -35,33 +35,26 @@ void memcpy(void* src, void* dest, size_t size) {
 
 int main()
 {
-	char x[100];
-	int i = 0, k = 0;
-	ofstream f("C:\\Users\\artyom\\OneDrive\\Рабочий стол\\new_file.txt");
-	ifstream g("C:\\Users\\artyom\\OneDrive\\Рабочий стол\\ar.txt");
-	if (!g.is_open())
+	char x;
+	ofstream dest("C:\\Users\\artyom\\OneDrive\\Рабочий стол\\new_file.txt");
+	ifstream src("C:\\Users\\artyom\\OneDrive\\Рабочий стол\\ar.txt");
+	if (!src.is_open())
 		cout << "Can't open file!\n";
-	if (!f.is_open())
+	if (!dest.is_open())
 		cout << "Can't create file!\n";
-	while (!g.eof())
+	while (!src.eof())
 	{
-		g >> x[i];
-		i++;
-
-	}
-
-	for (int j = 0; j < i; j++)
-	{
-		if (x[j] == ' ' || x[j] == ',')
-			k++;
-		else
-			k = 0;
-		if (k > 1)
-			continue;
-		else if (k == 1) {
-			f << endl;
-			continue;
+		src.get(x);
+		if (x != ' ' && x != ',' && x != '\n')
+		{
+			while (!src.eof() && x != ' ' && x != ',' && x != '\n')
+			{
+				dest << x;
+				src.get(x);
+			}
+			dest << '\n';
 		}
-		f << x[j];
 	}
+	src.close();
+	dest.close();
 }
